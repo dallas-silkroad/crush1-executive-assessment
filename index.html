@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Executive Edge Assessment · CRUSH1</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   CONFIG — Silk Road: edit these before going live
+   ============================================================ */
+:root{
+  --bg:#0d0f13; --card:#161a20; --card2:#1c212a; --ink:#ECEEF1; --mut:#9AA3AE;
+  --line:#2a313c; --accent:#C6A15B; --accent-d:#a8863f; --good:#5FBF97; --serif:'Cormorant Garamond',serif; --sans:'Inter',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(70% 50% at 50% -10%, rgba(198,161,91,.10), transparent 60%);min-height:100vh}
+.wrap{max-width:680px;margin:0 auto;padding:40px 20px 64px}
+.brand{text-align:center;margin-bottom:1.4rem}
+.brand .k{font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.brand h1{font-family:var(--serif);font-size:2.5rem;font-weight:600;letter-spacing:.01em;margin-top:.3rem}
+.brand p{color:var(--mut);margin-top:.5rem;font-size:.98rem}
+.prog{height:4px;background:var(--line);border-radius:4px;margin:1.6rem 0 1.8rem;overflow:hidden}
+.prog>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent-d),var(--accent));transition:width .4s}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1.6rem 1.5rem;box-shadow:0 24px 60px rgba(0,0,0,.4)}
+.step{display:none}.step.on{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.slabel{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:.2rem}
+.stitle{font-family:var(--serif);font-size:1.5rem;font-weight:600;margin-bottom:1.1rem}
+.q{margin-bottom:1.4rem}
+.q>label.ql{display:block;font-weight:600;font-size:1rem;margin-bottom:.6rem}
+.q .hint{color:var(--mut);font-weight:400;font-size:.85rem}
+.opt{display:flex;align-items:center;gap:.7rem;border:1px solid var(--line);background:var(--card2);border-radius:10px;padding:.7rem .85rem;margin-bottom:.5rem;cursor:pointer;transition:.15s}
+.opt:hover{border-color:var(--accent)}
+.opt input{accent-color:var(--accent);width:17px;height:17px;flex:0 0 auto}
+.opt span{font-size:.94rem}
+.opt.sel{border-color:var(--accent);background:rgba(198,161,91,.08)}
+input[type=text],input[type=email],textarea,select{width:100%;background:var(--card2);border:1px solid var(--line);border-radius:10px;color:var(--ink);padding:.7rem .85rem;font-family:var(--sans);font-size:.95rem}
+textarea{min-height:88px;resize:vertical}
+.scale{display:flex;gap:.4rem;flex-wrap:wrap}
+.scale label{flex:1;min-width:38px;text-align:center;border:1px solid var(--line);background:var(--card2);border-radius:8px;padding:.5rem 0;cursor:pointer;font-weight:600;font-size:.9rem}
+.scale input{display:none}
+.scale label.sel{border-color:var(--accent);background:rgba(198,161,91,.12);color:var(--accent)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+@media(max-width:520px){.row{grid-template-columns:1fr}}
+.nav{display:flex;justify-content:space-between;margin-top:1.4rem;gap:.8rem}
+.btn{font-family:var(--sans);font-weight:600;font-size:.95rem;border-radius:10px;padding:.8rem 1.4rem;cursor:pointer;border:1px solid transparent;transition:.2s}
+.btn-pri{background:var(--accent);color:#1a1408;margin-left:auto}
+.btn-pri:hover{background:var(--accent-d)}
+.btn-ghost{background:transparent;color:var(--mut);border-color:var(--line)}
+.btn-ghost:hover{color:var(--ink);border-color:var(--mut)}
+.err{color:#e88;font-size:.85rem;margin-top:.4rem;display:none}
+.legal{color:var(--mut);font-size:.78rem;margin-top:1.4rem;text-align:center;line-height:1.5}
+/* result */
+.result{display:none;text-align:center}
+.result.on{display:block;animation:fade .4s ease}
+.result .ico{width:64px;height:64px;border-radius:50%;background:rgba(198,161,91,.14);border:1px solid var(--accent);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;color:var(--accent);font-size:1.6rem}
+.result h2{font-family:var(--serif);font-size:2rem;font-weight:600;margin-bottom:.6rem}
+.result p{color:var(--mut);max-width:34rem;margin:0 auto .7rem}
+.result .cta{display:inline-block;margin-top:1rem;background:var(--accent);color:#1a1408;font-weight:700;border-radius:10px;padding:.85rem 1.6rem;text-decoration:none}
+.result .cta:hover{background:var(--accent-d)}
+</style></head>
+<body>
+<div class="wrap">
+  <div class="brand">
+    <p class="k">CRUSH1 · Above Fitness</p>
+    <h1>The Executive Edge Assessment</h1>
+    <p>A short, private assessment to organize what you're experiencing — so any next conversation is a more informed one. No obligation.</p>
+  </div>
+  <div class="prog"><i id="bar"></i></div>
+
+  <div class="card">
+  <form id="eea" novalidate>
+
+    <!-- STEP 1 · A -->
+    <div class="step on" data-step="0">
+      <div class="slabel">Part 1 of 5 · A little about you</div>
+      <div class="stitle">Your context</div>
+      <div class="q"><label class="ql">Which best describes your role?</label>
+        <div data-single="role">
+          <label class="opt"><input type="radio" name="role" value="founder"><span>Founder / CEO</span></label>
+          <label class="opt"><input type="radio" name="role" value="csuite"><span>C-suite</span></label>
+          <label class="opt"><input type="radio" name="role" value="evp"><span>President / EVP / SVP</span></label>
+          <label class="opt"><input type="radio" name="role" value="partner"><span>Partner / Managing Director</span></label>
+          <label class="opt"><input type="radio" name="role" value="other"><span>Other</span></label>
+        </div><div class="err">Please choose one.</div>
+      </div>
+      <div class="q"><label class="ql">Company scale</label>
+        <select name="scale">
+          <option value="">Select…</option>
+          <option value="1">Under $10M revenue</option>
+          <option value="2">$10M–$50M</option>
+          <option value="3">$50M–$250M</option>
+          <option value="4">$250M–$1B</option>
+          <option value="5">$1B+</option>
+        </select><div class="err">Please select.</div>
+      </div>
+      <div class="q"><label class="ql">Typical weekly travel &amp; load</label>
+        <div data-single="load">
+          <label class="opt"><input type="radio" name="load" value="low"><span>Low</span></label>
+          <label class="opt"><input type="radio" name="load" value="mod"><span>Moderate</span></label>
+          <label class="opt"><input type="radio" name="load" value="high"><span>High</span></label>
+          <label class="opt"><input type="radio" name="load" value="vhigh"><span>Very high</span></label>
+        </div><div class="err">Please choose one.</div>
+      </div>
+    </div>
+
+    <!-- STEP 2 · B -->
+    <div class="step" data-step="1">
+      <div class="slabel">Part 2 of 5 · Where you are</div>
+      <div class="stitle">Your lived experience</div>
+      <div class="q"><label class="ql">Which is closest to where you are right now?</label>
+        <div data-single="where">
+          <label class="opt"><input type="radio" name="where" value="edge"><span>In great shape — I want an edge</span></label>
+          <label class="opt"><input type="radio" name="where" value="slip"><span>Was in great shape, slipping</span></label>
+          <label class="opt"><input type="radio" name="where" value="energy"><span>Energy &amp; recovery aren't what they were</span></label>
+          <label class="opt"><input type="radio" name="where" value="off"><span>I know something's off — I haven't addressed it</span></label>
+        </div><div class="err">Please choose one.</div>
+      </div>
+      <div class="q"><label class="ql">What's changed that matters most? <span class="hint">(select any)</span></label>
+        <div data-multi="changed">
+          <label class="opt"><input type="checkbox" name="changed" value="energy"><span>Energy</span></label>
+          <label class="opt"><input type="checkbox" name="changed" value="recovery"><span>Recovery / sleep</span></label>
+          <label class="opt"><input type="checkbox" name="changed" value="clarity"><span>Clarity / focus</span></label>
+          <label class="opt"><input type="checkbox" name="changed" value="presence"><span>Confidence / presence</span></label>
+          <label class="opt"><input type="checkbox" name="changed" value="condition"><span>Physical condition</span></label>
+          <label class="opt"><input type="checkbox" name="changed" value="resilience"><span>Resilience under stress</span></label>
+        </div>
+      </div>
+      <div class="q"><label class="ql">How fully does your current physical &amp; energy state support the life and responsibility you carry? <span class="hint">(1 = not at all, 10 = completely)</span></label>
+        <div class="scale" data-scale="support">
+          <label><input type="radio" name="support" value="1">1</label><label><input type="radio" name="support" value="2">2</label>
+          <label><input type="radio" name="support" value="3">3</label><label><input type="radio" name="support" value="4">4</label>
+          <label><input type="radio" name="support" value="5">5</label><label><input type="radio" name="support" value="6">6</label>
+          <label><input type="radio" name="support" value="7">7</label><label><input type="radio" name="support" value="8">8</label>
+          <label><input type="radio" name="support" value="9">9</label><label><input type="radio" name="support" value="10">10</label>
+        </div><div class="err">Please choose a number.</div>
+      </div>
+    </div>
+
+    <!-- STEP 3 · C -->
+    <div class="step" data-step="2">
+      <div class="slabel">Part 3 of 5 · How you operate</div>
+      <div class="stitle">Your approach</div>
+      <div class="q"><label class="ql">When you've solved a hard problem outside your own expertise, you usually…</label>
+        <div data-single="solve">
+          <label class="opt"><input type="radio" name="solve" value="expert"><span>Hire the best expert and follow their system</span></label>
+          <label class="opt"><input type="radio" name="solve" value="delegate"><span>Delegate it to my team</span></label>
+          <label class="opt"><input type="radio" name="solve" value="diy"><span>Research and figure it out myself</span></label>
+          <label class="opt"><input type="radio" name="solve" value="willpower"><span>Push through with willpower</span></label>
+        </div><div class="err">Please choose one.</div>
+      </div>
+      <div class="q"><label class="ql">In the last two years, which have you invested in for yourself? <span class="hint">(select any)</span></label>
+        <div data-multi="invested">
+          <label class="opt"><input type="checkbox" name="invested" value="exec_coach"><span>Executive coach</span></label>
+          <label class="opt"><input type="checkbox" name="invested" value="consultant"><span>Business coach / consultant</span></label>
+          <label class="opt"><input type="checkbox" name="invested" value="concierge"><span>Concierge / functional medicine</span></label>
+          <label class="opt"><input type="checkbox" name="invested" value="trainer"><span>Personal trainer</span></label>
+          <label class="opt"><input type="checkbox" name="invested" value="biohack"><span>Biohacking / longevity program / labs</span></label>
+          <label class="opt"><input type="checkbox" name="invested" value="therapist"><span>Therapist / performance psychologist</span></label>
+          <label class="opt"><input type="checkbox" name="invested" value="none"><span>None of these</span></label>
+        </div>
+      </div>
+      <div class="q"><label class="ql">What's the most you've invested in your own performance or health in a single engagement?</label>
+        <div data-single="invest_band">
+          <label class="opt"><input type="radio" name="invest_band" value="u1"><span>Under $1,000</span></label>
+          <label class="opt"><input type="radio" name="invest_band" value="1_5"><span>$1,000–$5,000</span></label>
+          <label class="opt"><input type="radio" name="invest_band" value="5_15"><span>$5,000–$15,000</span></label>
+          <label class="opt"><input type="radio" name="invest_band" value="15p"><span>$15,000+</span></label>
+          <label class="opt"><input type="radio" name="invest_band" value="na"><span>Prefer not to say</span></label>
+        </div><div class="err">Please choose one.</div>
+      </div>
+      <div class="q"><label class="ql">When you decide something matters, you tend to…</label>
+        <div data-single="velocity">
+          <label class="opt"><input type="radio" name="velocity" value="fast"><span>Move quickly once I'm convinced</span></label>
+          <label class="opt"><input type="radio" name="velocity" value="deliberate"><span>Deliberate, then commit</span></label>
+          <label class="opt"><input type="radio" name="velocity" value="wait"><span>Wait for the right time</span></label>
+          <label class="opt"><input type="radio" name="velocity" value="rarely"><span>Rarely get to it</span></label>
+        </div><div class="err">Please choose one.</div>
+      </div>
+      <div class="q"><label class="ql">If a structured system could return more capacity than it costs you in time, that trade is…</label>
+        <div data-single="value">
+          <label class="opt"><input type="radio" name="value" value="obvious"><span>Obviously worth it</span></label>
+          <label class="opt"><input type="radio" name="value" value="explore"><span>Worth exploring</span></label>
+          <label class="opt"><input type="radio" name="value" value="skeptical"><span>I'm skeptical</span></label>
+          <label class="opt"><input type="radio" name="value" value="notpriority"><span>Not a priority</span></label>
+        </div><div class="err">Please choose one.</div>
+      </div>
+    </div>
+
+    <!-- STEP 4 · D -->
+    <div class="step" data-step="3">
+      <div class="slabel">Part 4 of 5 · Fit</div>
+      <div class="stitle">Readiness</div>
+      <div class="q"><label class="ql">Is now a season where you'd actually participate? <span class="hint">(CRUSH1 is a structured system, not a quick fix.)</span></label>
+        <div data-single="ready">
+          <label class="opt"><input type="radio" name="ready" value="yes"><span>Yes</span></label>
+          <label class="opt"><input type="radio" name="ready" value="maybe"><span>Maybe</span></label>
+          <label class="opt"><input type="radio" name="ready" value="notnow"><span>Not now</span></label>
+        </div><div class="err">Please choose one.</div>
+      </div>
+      <div class="q"><label class="ql">Anything you'd want us to understand about your situation? <span class="hint">(optional)</span></label>
+        <textarea name="notes" placeholder="In your own words…"></textarea>
+      </div>
+    </div>
+
+    <!-- STEP 5 · E -->
+    <div class="step" data-step="4">
+      <div class="slabel">Part 5 of 5 · Where to send your summary</div>
+      <div class="stitle">Your details</div>
+      <div class="row">
+        <div class="q"><label class="ql">Name</label><input type="text" name="name"><div class="err">Required.</div></div>
+        <div class="q"><label class="ql">Role / title</label><input type="text" name="title"></div>
+      </div>
+      <div class="row">
+        <div class="q"><label class="ql">Company</label><input type="text" name="company"></div>
+        <div class="q"><label class="ql">Email</label><input type="email" name="email"><div class="err">Valid email required.</div></div>
+      </div>
+      <div class="q"><label class="ql">Best way / time to reach you <span class="hint">(optional)</span></label><input type="text" name="reach"></div>
+    </div>
+
+    <div class="nav">
+      <button type="button" class="btn btn-ghost" id="back" style="visibility:hidden">← Back</button>
+      <button type="button" class="btn btn-pri" id="next">Continue →</button>
+    </div>
+  </form>
+
+  <!-- RESULT -->
+  <div class="result" id="result">
+    <div class="ico">✓</div>
+    <h2 id="rTitle">Thank you.</h2>
+    <p id="rBody"></p>
+    <a class="cta" id="rCta" href="#" target="_blank" rel="noopener" style="display:none"></a>
+  </div>
+  </div>
+
+  <p class="legal">The Executive Edge Assessment helps organize what you're experiencing to inform a possible next conversation. It is not medical advice; CRUSH1 does not diagnose, prescribe, or treat. Your responses are private.</p>
+</div>
+
+<script>
+/* ================= CONFIG — Silk Road: set these ================= */
+var CONFIG = {
+  ENDPOINT_URL: "",   // POST responses to your Client Acquisition engine (leave "" to skip)
+  BOOKING_URL:  "https://calendly.com/REPLACE-with-Chris-booking",   // Tier A → book
+  INTERVIEW_URL:"https://REPLACE-with-interview-invite-or-nurture"   // Tier B → interview lane
+};
+/* ================================================================ */
+
+var steps = Array.prototype.slice.call(document.querySelectorAll('.step'));
+var cur = 0, bar = document.getElementById('bar');
+var nextBtn = document.getElementById('next'), backBtn = document.getElementById('back');
+
+function paint(){
+  steps.forEach(function(s,i){ s.classList.toggle('on', i===cur); });
+  bar.style.width = ((cur)/(steps.length))*100 + '%';
+  backBtn.style.visibility = cur===0 ? 'hidden':'visible';
+  nextBtn.textContent = cur===steps.length-1 ? 'See my summary →' : 'Continue →';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+/* option highlight */
+document.addEventListener('change', function(e){
+  var opt = e.target.closest('.opt');
+  if(opt){ var box=opt.parentNode;
+    if(e.target.type==='radio'){ box.querySelectorAll('.opt').forEach(function(o){o.classList.remove('sel')}); opt.classList.add('sel'); }
+    else { opt.classList.toggle('sel', e.target.checked); }
+  }
+  var sc = e.target.closest('.scale');
+  if(sc){ sc.querySelectorAll('label').forEach(function(l){l.classList.remove('sel')}); e.target.closest('label').classList.add('sel'); }
+});
+function validate(){
+  var step = steps[cur], ok=true;
+  step.querySelectorAll('.err').forEach(function(x){x.style.display='none'});
+  // required singles
+  step.querySelectorAll('[data-single]').forEach(function(g){
+    var name=g.getAttribute('data-single');
+    if(!step.querySelector('input[name="'+name+'"]:checked')){ g.parentNode.querySelector('.err').style.display='block'; ok=false; }
+  });
+  step.querySelectorAll('[data-scale]').forEach(function(g){
+    var name=g.getAttribute('data-scale');
+    if(!step.querySelector('input[name="'+name+'"]:checked')){ g.parentNode.querySelector('.err').style.display='block'; ok=false; }
+  });
+  var sel=step.querySelector('select[name=scale]');
+  if(sel && !sel.value){ sel.parentNode.querySelector('.err').style.display='block'; ok=false; }
+  if(cur===4){
+    var nm=step.querySelector('[name=name]'), em=step.querySelector('[name=email]');
+    if(!nm.value.trim()){ nm.parentNode.querySelector('.err').style.display='block'; ok=false; }
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em.value)){ em.parentNode.querySelector('.err').style.display='block'; ok=false; }
+  }
+  return ok;
+}
+nextBtn.addEventListener('click', function(){
+  if(!validate()) return;
+  if(cur < steps.length-1){ cur++; paint(); }
+  else finish();
+});
+backBtn.addEventListener('click', function(){ if(cur>0){cur--; paint();} });
+
+function val(n){ var el=document.querySelector('input[name="'+n+'"]:checked'); return el?el.value:''; }
+function multi(n){ return Array.prototype.map.call(document.querySelectorAll('input[name="'+n+'"]:checked'),function(e){return e.value}); }
+function txt(n){ var el=document.querySelector('[name="'+n+'"]'); return el?el.value.trim():''; }
+
+function score(){
+  var s=0, max=0;
+  // Fit
+  var role={founder:6,csuite:6,evp:6,partner:5,other:2}[val('role')]||0; s+=role; max+=6;
+  var scale=parseInt(document.querySelector('[name=scale]').value||0)*1; s+=scale; max+=5;
+  var load={low:0,mod:2,high:4,vhigh:6}[val('load')]||0; s+=load; max+=6;
+  // Need
+  var where={edge:3,slip:5,energy:6,off:8}[val('where')]||0; s+=where; max+=8;
+  var changed=Math.min(multi('changed').length*2,8); s+=changed; max+=8;
+  var support=parseInt(val('support')||10); var need=(10-support)*1.3; s+=need; max+=11.7;
+  // Behavioral buying indicators (heaviest)
+  var solve={expert:25,delegate:10,diy:5,willpower:0}[val('solve')]||0; s+=solve; max+=25;
+  var inv=multi('invested'); var invPts=0;
+  inv.forEach(function(v){ if(v==='trainer')invPts+=3; else if(v!=='none')invPts+=5; }); invPts=Math.min(invPts,20); s+=invPts; max+=20;
+  var band={u1:0,'1_5':6,'5_15':12,'15p':18,na:3}[val('invest_band')]||0; s+=band; max+=18;
+  var vel={fast:12,deliberate:8,wait:3,rarely:0}[val('velocity')]||0; s+=vel; max+=12;
+  var value={obvious:12,explore:7,skeptical:2,notpriority:0}[val('value')]||0; s+=value; max+=12;
+  // Readiness
+  var ready={yes:12,maybe:6,notnow:0}[val('ready')]||0; s+=ready; max+=12;
+  var pct=Math.round(s/max*100);
+  // tiering with overrides
+  var tier;
+  if(pct>=60) tier='A'; else if(pct>=35) tier='B'; else tier='C';
+  if(val('ready')==='notnow' && tier==='A') tier='B';           // not-now caps at nurture/interview
+  if(val('solve')==='willpower' && inv.indexOf('none')>-1 && band==0) tier='C';
+  return {pct:pct, tier:tier};
+}
+
+function finish(){
+  var r=score();
+  var payload={
+    tier:r.tier, score:r.pct,
+    role:val('role'), company_scale:document.querySelector('[name=scale]').value, load:val('load'),
+    where:val('where'), changed:multi('changed'), support:val('support'),
+    solve:val('solve'), invested:multi('invested'), invest_band:val('invest_band'),
+    velocity:val('velocity'), value:val('value'), ready:val('ready'), notes:txt('notes'),
+    name:txt('name'), title:txt('title'), company:txt('company'), email:txt('email'), reach:txt('reach'),
+    submitted_at:new Date().toISOString(), source:'executive-edge-assessment'
+  };
+  console.log('EEA payload', payload);
+  if(CONFIG.ENDPOINT_URL){ try{ fetch(CONFIG.ENDPOINT_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}); }catch(e){} }
+
+  document.getElementById('eea').style.display='none';
+  bar.style.width='100%';
+  var res=document.getElementById('result'); res.classList.add('on');
+  var t=document.getElementById('rTitle'), b=document.getElementById('rBody'), cta=document.getElementById('rCta');
+  if(r.tier==='A'){
+    t.textContent='This sounds worth a conversation.';
+    b.textContent="Thank you — your responses suggest the distinction CRUSH1 works on may be relevant for you. The next step is a short, no-pressure conversation to review what you shared and whether it's a fit. Choose a time that works:";
+    cta.textContent='Book your conversation →'; cta.href=CONFIG.BOOKING_URL; cta.style.display='inline-block';
+  } else if(r.tier==='B'){
+    t.textContent='Thank you — this may be worth exploring.';
+    b.textContent="We appreciate you taking the time. Based on what you shared, a good starting point may be a candid conversation about the hidden biological tax of success — no pitch, just perspective. If that's useful, start here:";
+    cta.textContent='Learn more →'; cta.href=CONFIG.INTERVIEW_URL; cta.style.display='inline-block';
+  } else {
+    t.textContent='Thank you for your candor.';
+    b.textContent="We'll send a short summary to your email. CRUSH1 is a high-touch system built for a specific moment — if the timing or fit changes, the door is always open.";
+    cta.style.display='none';
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+paint();
+</script>
+</body></html>
